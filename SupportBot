@@ -1,0 +1,149 @@
+import re
+import random
+
+class Chatbot:
+    negative_responses = ("no", "nah", "sorry", "nope", "not a chance", "naw")
+    exit_responses = ("bye", "Goodbye", "exit", "quit", "pause", "later")
+
+    def __init__(self):
+        self.botable = {
+            'name_intent': r'.*\s*your name.*',
+            'human_intent': r'.*\s*you a human.*',
+            'age_intent': r'.*\s*old.*',
+            'language_intent': r'.*\s*languages.*',
+            'robot_intent': r'.*\s*robot.*',
+            'help_intent': r'.*\s*help.*',
+            'joke_intent': r'.*\s*tell me a joke.*',
+            'song_intent': r'.*\s*song.*',
+            'activity_intent': r'.*\s*what are you doing.*',
+            'movie_suggestion_intent': r'.*\s*movie.*',
+        }
+
+    def greet(self):
+        self.name = input("Hey hello!, what is your name?\n")
+        will_help = input(f"Hi {self.name}, I am SupportBot. How was your day?\n")
+        if will_help in self.negative_responses:
+            print("Bad to hear from you... Don't feel for it.")
+            return
+        elif "not good" in will_help.lower():
+            print("I'm sorry to hear that. Is there anything I can do to make your day better?")
+            user_response = input("Yes or no? ").lower()
+            if user_response == "no":
+                print("Alright, have a nice day!")
+                return
+        self.chat()
+
+    def make_exit(self, reply):
+        if reply in self.exit_responses:
+            print("Alright, have a nice day!")
+            return True
+
+    def chat(self):
+        reply = input("Good to hear from you...How may I help you?\n").lower()
+        while not self.make_exit(reply):
+            reply = input(self.match_reply(reply))
+
+    def tell_joke(self):
+        jokes = [
+            "Why did the AI break up with the computer? It found someone byte-sized!",
+            "How do you organize a space party? You 'planet'!",
+            "Why did the scarecrow win an award? Because he was outstanding in his field!",
+        ]
+        joke = random.choice(jokes)
+        print(f"Sure, here's a joke for you: {joke}")
+        return ""
+
+    def suggest_song(self):
+        songs = [
+            "Oru Naalum Vazhkai Engum Odi Pogathu",
+            "Kanavugal Kazhainthal Enna Kalangida",
+            "Imagine by John Lennon",
+            "Bohemian Rhapsody by Queen",
+        ]
+        song = random.choice(songs)
+        print(f"Sure, how about listening to '{song}'?")
+        user_response = input("OK or No: ").lower()
+        if user_response == "ok":
+            print("Enjoy your music!,Anything else")
+            return ""
+        else:
+            print("Sorry for the inconvenience. Do you need any other help?\n")
+            return ""
+
+    def activity_intent(self):
+        return "I'm here to assist you. I'm currently free and ready to help you with any questions or tasks you have. How can I assist you today?\n"
+
+    def movie_suggestion_intent(self):
+        movies = ["Leo", "Vikram", "RajaRani", "Kabali", "Inception"]
+        movie = random.choice(movies)
+        print(f"I suggest you watch the movie '{movie}'.")
+        user_response = input("Do you want to watch this movie? (Yes/No): ").lower()
+        if user_response == "yes":
+            print("Enjoy your movie time!")
+        else:
+            print("I apologize if you didn't like the suggestion. Is there anything else I can assist you with?")
+        return ""
+
+    def match_reply(self, reply):
+        for key, value in self.botable.items():
+            intent = key
+            regex_pattern = value
+            found_match = re.match(regex_pattern, reply)
+            if found_match and intent == 'name_intent':
+                return self.name_intent()
+            elif found_match and intent == 'human_intent':
+                return self.human_intent()
+            elif found_match and intent == 'age_intent':
+                return self.age_intent()
+            elif found_match and intent == 'language_intent':
+                return self.language_intent()
+            elif found_match and intent == 'robot_intent':
+                return self.robot_intent()
+            elif found_match and intent == 'help_intent':
+                return self.help_intent()
+            elif found_match and intent == 'joke_intent':
+                return self.tell_joke()
+            elif found_match and intent == 'song_intent':
+                return self.suggest_song()
+            elif found_match and intent == 'activity_intent':
+                return self.activity_intent()
+            elif found_match and intent == 'movie_suggestion_intent':
+                return self.movie_suggestion_intent()
+        if not found_match:
+            return self.no_match_intent()
+
+    def name_intent(self):
+        user_response = input("My name is SupportBot. You can call me as you wish. Do you want me to change my name (yes/no): ").lower()
+        if user_response == "yes":
+            new_name = input("Please suggest a name for me: ")
+            return f"Oh, {new_name} that suits me well\n!"
+        else:
+            return "Alright, is there anything else I can assist you with today?\n"
+
+    def human_intent(self):
+        responses = ["No, I am not a human, but I can talk like a human. Just kidding. I am an AI here to assist you.\n", "No, I am an AI here to assist you.\n"]
+        return random.choice(responses)
+
+    def age_intent(self):
+        responses = ["Interesting! It's not about age. I have learned so much, and I hope I'm wise beyond my years.\n", "I was manufactured on dd-mm-yyyy, but it doesn't mean that I am not old enough to assist you.\n"]
+        return random.choice(responses)
+
+    def language_intent(self):
+        responses = ["I can understand and speak multiple languages, including English, Spanish, French, and more.\n"]
+        return random.choice(responses)
+
+    def robot_intent(self):
+        responses = ["I don't have any robotic parts. I am software that runs on your phone or computer.\n", "No, I am not a robot, I am an AI.\n"]
+        return random.choice(responses)
+
+    def help_intent(self):
+        responses = ["Yes, I am here to help you.\n"]
+        return random.choice(responses)
+
+    def no_match_intent(self):
+        responses = ["Please tell me more.\n", "Tell me more!\n", "Why do you say that?\n",
+                     "I see. Can you elaborate?\n", "How do you think?\n"]
+        return random.choice(responses)
+
+chatbot = Chatbot()
+chatbot.greet()
