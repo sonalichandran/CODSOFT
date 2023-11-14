@@ -15,8 +15,11 @@ class Chatbot:
             'help_intent': r'.*\s*help.*',
             'joke_intent': r'.*\s*tell me a joke.*',
             'song_intent': r'.*\s*song.*',
-            'activity_intent': r'.*\s*what are you doing.*',
+            'activity_intent': r'.*\s*sonaliyou doing.*',
             'movie_suggestion_intent': r'.*\s*movie.*',
+            'friend_intent': r'.*\s*your friend.*',
+            'how_was_your_day_intent': r'.*\s*your day.*',
+            'fact_intent': r'.*\s*fact.*',
         }
 
     def greet(self):
@@ -84,6 +87,24 @@ class Chatbot:
             print("I apologize if you didn't like the suggestion. Is there anything else I can assist you with?")
         return ""
 
+    def friend_intent(self):
+        response = "I don't have friends in the traditional sense because I'm just a computer program. But I'm here to assist you and answer your questions.\n"
+        return response
+
+    def how_was_your_day_intent(self):
+        response = "Yeah, it's good. I'm happy that someone even cares about how my day is going. Thanks for asking!"
+        return response
+
+    def tell_fact(self):
+        facts = [
+            "Did you know that honey never spoils? Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still perfectly edible!",
+            "Here's an interesting fact: The average person spends six months of their life waiting for red lights to turn green.",
+            "Fun fact - There are more possible iterations of a game of chess than there are atoms in the known universe.",
+        ]
+        fact = random.choice(facts)
+        print(fact)
+        return ""
+
     def match_reply(self, reply):
         for key, value in self.botable.items():
             intent = key
@@ -109,6 +130,12 @@ class Chatbot:
                 return self.activity_intent()
             elif found_match and intent == 'movie_suggestion_intent':
                 return self.movie_suggestion_intent()
+            elif found_match and intent == 'friend_intent':
+                return self.friend_intent()
+            elif found_match and intent == 'how_was_your_day_intent':
+                return self.how_was_your_day_intent()
+            elif found_match and intent == 'fact_intent':
+                return self.tell_fact()
         if not found_match:
             return self.no_match_intent()
 
@@ -116,7 +143,7 @@ class Chatbot:
         user_response = input("My name is SupportBot. You can call me as you wish. Do you want me to change my name (yes/no): ").lower()
         if user_response == "yes":
             new_name = input("Please suggest a name for me: ")
-            return f"Oh, {new_name} that suits me well\n!"
+            return f"Oh, {new_name} that suits me well!\n"
         else:
             return "Alright, is there anything else I can assist you with today?\n"
 
@@ -141,8 +168,8 @@ class Chatbot:
         return random.choice(responses)
 
     def no_match_intent(self):
-        responses = ["Please tell me more.\n", "Tell me more!\n", "Why do you say that?\n",
-                     "I see. Can you elaborate?\n", "How do you think?\n"]
+        responses = ["Please tell me more.\n", "Tell me more!\n", "I can;t get you.Please rephrase it"
+                    ]
         return random.choice(responses)
 
 chatbot = Chatbot()
