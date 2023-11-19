@@ -2,7 +2,6 @@ import pandas as pd
 from surprise import Dataset, Reader, SVD
 from surprise.model_selection import train_test_split
 
-
 data = {
     'user': ['Afreen', 'Srii', 'Indhu', 'kirthi', 'Sai', 'Vridha', 'Ananya', 'Aara', 'Varunika', 'Aadhvi'],
     'item': ['Leo', 'Anandam', 'June', 'OruAdaarLove', 'Premam', 'Love', 'Akaashwaani', 'Fidaa', 'Thankyou', 'Bigil'],
